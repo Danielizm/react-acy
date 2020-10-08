@@ -1,0 +1,244 @@
+@font-face {
+  font-family: "San Francisco Pro";
+  src: local("San Francisco Pro Display Regular"),
+    local("San-Francisco-Pro-Display-Regular"),
+    url("../fonts/SFProDisplay-Regular.woff2") format("woff2"),
+    url("../fonts/SFProDisplay-Regular.woff") format("woff"),
+    url("../fonts/SFProDisplay-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@import "variables";
+@import "mixin";
+* {
+  box-sizing: border-box;
+}
+h2{
+  font-weight: 500;
+font-size: 22px;
+line-height: 30px;
+color:$blue;
+}
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin: auto;
+  @include lg {
+    padding: 0 1rem;
+  }
+}
+.overlay{
+  width:100%;
+  height:100%;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: 9;
+  background: rgba(0,0,0,0.5);
+  display:none;
+}
+.btn-primary{
+  border: 1px solid $blue;
+  padding: 12px 17px;
+  color: $blue;
+  font-size: 16px;
+  line-height: 24px;
+  display:inline-block;
+  transition: all 0.4s;
+  &:hover{
+    background: $blue;
+    color:$white;
+  }
+}
+.box{
+  border: 1px solid #DBDBDB;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 14px rgba(132, 132, 132, 0.5);
+    border-radius: 20px;
+    margin-top: 100px;
+    margin-bottom: 144px;
+}
+.webinar {
+  font-family: "San Francisco Pro";
+  color: black;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  .top-bar {
+    height: 2rem;
+    background: $grey;
+  }
+  .webinar-header {
+    background-color: $white;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid $lt_grey;
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      //font-size: calc(10px + 2vmin);
+      .toggle-btn {
+        position: relative;
+        height: 18px;
+        width: 28px;
+        display: none;
+        span{
+          position: absolute;
+          width: 28px;
+          height: 3px;
+          background: $black;
+          border-radius:3px;
+          &.up{top:0}
+          &.mid{top:9px}
+          &.down{top:18px;}
+        }
+        @include md{
+          display: block;
+        }
+      }
+      .webinar-logo {
+        img {
+          height: 6vmin;
+          @include md{
+            height: 7vmin;
+          }
+        }
+      }
+      .menu {
+        .close{
+          position: relative;
+          display:none;
+          cursor: pointer;
+          &::after{
+            content:"X";
+            position: absolute;
+            top:15px;
+            right:20px;
+            font-size: 20px;
+          }
+          @include md{
+            display: block;
+          }
+        }
+        ul {
+          padding-inline-start: 0;
+          list-style: none;
+          display: flex;
+          justify-content: space-between;
+          li {
+            display: inline-block;
+            padding: 0 2rem;
+            a {
+              font-size: 16px;
+              position: relative;
+              &::after {
+                content: "";
+                border: solid $black;
+                border-width: 0 2px 2px 0;
+                display: inline-block;
+                padding: 2px;
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+                position: absolute;
+                top: 30%;
+                right: -15px;
+              }
+            }
+          }
+        }
+        @include md{
+          //display: none;
+          position: fixed;
+          top:0;
+          left:0;
+          z-index: 10;
+          width:80%;
+          height:100%;
+          background: $white;
+          //transform: translateX(-100%);
+          left:-100%;
+          transition: all .5s;
+          &.open{
+            //transform: translateX(0);
+            left:0;
+          }
+          ul{
+            flex-wrap: wrap;
+            padding-top:3rem;
+            li{
+            width:100%;
+            text-align: center;
+            display:block;
+            padding:1rem 0;
+            border-bottom: 1px solid $lt_grey;
+            a{
+              font-size: 6vw;
+              &::after{
+                padding:4px;
+                right: -25px;
+              }
+            }
+          }
+        }
+        }
+      }
+      .header-links {
+        a {
+          padding: 0.3rem 1.8rem;
+          margin: 0 0.2rem;
+          background: $dk_blue;
+          color: $white;
+          border-radius: 3px;
+          border: 1px solid $dk_blue;
+          transition: all 0.4s ease-in-out;
+          &.pro-link{
+            background:$white;
+            color:$dk_blue;
+            &:hover{
+              background: $dk_blue;
+              color: $white;
+            }
+          }
+          &:hover {
+            background: $white;
+            color: $dk_blue;
+          }
+        }
+      }
+    }
+  }
+}
+.profile-container{
+  display:inline-block;
+  margin:3rem auto;
+  p{
+  max-width: 500px;
+  }
+}
+.webinar-detail{
+  .detail-wrap{
+    padding:80px 0;
+  max-width: 500px;
+  margin:auto;
+  }
+}
+@import 'main';
+@import 'form';
+@import 'slick';
+@import 'slickTheme';
+
+/*@media (prefers-reduced-motion: no-preference) {
+  .webinar-logo {
+    animation: webinar-logo-spin infinite 20s linear;
+  }
+}*/
+
+/*@keyframes webinar-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}*/

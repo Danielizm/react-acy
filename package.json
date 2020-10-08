@@ -1,14 +1,29 @@
 {
   "name": "react-webinar",
+  "proxy": "https://api.finlogix.com",
   "version": "0.1.0",
   "private": true,
+  "description": "A demo app for webinar",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.20.0",
+    "axios-https-proxy-fix": "^0.17.1",
+    "http-proxy-middleware": "^1.0.5",
+    "js-cookie": "^2.2.1",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
+    "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-html-parser": "^2.0.2",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "react-slick": "^0.27.11",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "slick-carousel": "^1.8.1"
   },
   "scripts": {
     "start": "react-scripts start",

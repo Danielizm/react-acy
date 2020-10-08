@@ -1,14 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Route} from 'react-router-dom';
+import './assets/scss/App.scss';
+import Header from './components/Header'
+import MainScreen from './screens/MainScreen';
+import LoginScreen from './screens/LoginScreen';
+import Profile from './screens/Profile'
+import Webinar from './screens/Webinar'
 
 function App() {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
+    <BrowserRouter>
+    <div className="webinar">
+      <div className="top-bar"></div>
+      <Header/>
+      <main className="main">
+          <div className="content">
+            <Route path='/' exact={true} component={MainScreen}/>
+            <Route path='/login' component={LoginScreen}/>
+            <Route path='/profile' component={Profile}/>
+            <Route path='/webinar/:id' component={Webinar}/>
+          </div>
+      </main>
     </div>
+    <div className="overlay"></div>
+    </BrowserRouter>
   );
 }
 
