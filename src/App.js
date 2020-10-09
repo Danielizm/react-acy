@@ -6,6 +6,7 @@ import MainScreen from './screens/MainScreen';
 import LoginScreen from './screens/LoginScreen';
 import Profile from './screens/Profile'
 import Webinar from './screens/Webinar'
+import Registed from './screens/Registed'
 
 function App() {
   
@@ -20,6 +21,7 @@ function App() {
             <Route path='/login' component={LoginScreen}/>
             <Route path='/profile' component={Profile}/>
             <Route path='/webinar/:id' component={Webinar}/>
+            <Route path='/registed' component={Registed}/>
           </div>
       </main>
     </div>

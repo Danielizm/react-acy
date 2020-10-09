@@ -1,12 +1,16 @@
 import React,{useEffect} from 'react'
 import Card from './Card'
 import {useSelector,useDispatch} from 'react-redux';
-import {listWebinar} from '../actions/webinarActions'
+import {listWebinar,listWebinarWithToken} from '../actions/webinarActions'
 import Slider from "react-slick";
 
 const WebinarList = () => {
     const webinarList = useSelector(state=>state.webinarList)
     const {webinars,loading,error} = webinarList
+    const webinarListToken = useSelector(state=>state.webinarListToken)
+    const {webinarsT,tloading,terror} = webinarListToken
+    const userLogin = useSelector((state) => state.userLogin);
+    const {userInfo} = userLogin;
     //const {data} = webinars
     const dispatch = useDispatch()
     const settings = {
@@ -31,18 +35,26 @@ const WebinarList = () => {
       };
 
     useEffect(() => {
-        dispatch(listWebinar());
+        if(userInfo){
+        dispatch(listWebinarWithToken());
+        }else{
+            dispatch(listWebinar());  
+        }
         return () => {
         }
-    }, [dispatch])
+    }, [dispatch,userInfo])
     return (
         <div className='webinar-list'>
-            {loading ? <div className="text-center">Loading...</div> : error ? <div className="text-center">{error}</div> : 
+            {(userInfo && tloading) ? <div className="text-center">Loading...</div> : (userInfo && terror) ? <div className="text-center">{terror}</div> : 
+            (!userInfo && loading) ? <div className="text-center">Loading...</div> : (!userInfo && error) ? <div className="text-center">{error}</div> : 
             <div className="container">
                 <Slider {...settings}>
                 {/*<div className="card-wrap">*/}
-                {webinars.map(w=>(
-                <Card key={w.id} id={w.id} date={w.created_at} title={w.title} favourited={w.favourited} content={w.content}/>))
+                {userInfo ?
+                webinarsT.filter(x => x.favourited === false).map(w=>(
+                <Card key={w.id} id={w.id} date={w.created_at} title={w.title} favourite={w.favourited} content={w.content}/>)) : 
+                webinars.map(w=>(
+                    <Card key={w.id} id={w.id} date={w.created_at} title={w.title} favourite={w.favourited} content={w.content}/>)) 
                 }
                 {/*</div>*/}  
                 </Slider>         

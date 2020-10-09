@@ -100,6 +100,7 @@ color:$blue;
       .webinar-logo {
         img {
           height: 6vmin;
+          vertical-align: middle;
           @include md{
             height: 7vmin;
           }
@@ -204,6 +205,9 @@ color:$blue;
             background: $white;
             color: $dk_blue;
           }
+          @include sm{
+            padding:0.2rem 1.3rem;
+          }
         }
       }
     }
@@ -222,6 +226,7 @@ color:$blue;
   max-width: 500px;
   margin:auto;
   }
+  a{margin-top:20px;text-decoration: underline;display: block;}
 }
 @import 'main';
 @import 'form';

@@ -20,13 +20,39 @@ form {
         display: block;
         margin-bottom: 8px;
       }
-      input,select {
+      input,.selectdiv select {
         display: block;
         border: 1px solid #c6c6c6;
         border-radius: 4px;
-        padding:10px;
+        padding:12px;
         width:100%;
+        font-size: 16px;
+        line-height: 22px;
       }
+      .selectdiv{
+        position: relative;
+        &::after {
+        content:'';
+        border: solid #c6c6c6;
+        border-width: 0 1.5px 1.5px 0;
+        display: inline-block;
+        padding: 4px;
+        transform: rotate(45deg) translate(0,-50%);
+        -webkit-transform: rotate(45deg) translate(0,-50%);
+        position: absolute;
+        right:15px;
+        top:45%;
+        }
+      }
+      /* IE11 hide native button */
+      select::-ms-expand {
+        display: none;
+        }
+        .selectdiv select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+        }
       input.invalid{
         border-color: $red;
       }
@@ -39,7 +65,13 @@ form {
           border:none;
           padding:13px 0;
           margin:10px auto;
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 22px;
           cursor: pointer;
+          &:disabled{
+            cursor: not-allowed;
+          }
           &:focus{
               outline: none;
           }

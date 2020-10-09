@@ -1,15 +1,17 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import {useSelector,useDispatch} from 'react-redux'
 import Arrow from '../arrow.svg'
 import ReactHtmlParser from 'react-html-parser';
 import AnchorLink from 'react-anchor-link-smooth-scroll'
-import {addTopic} from '../actions/webinarActions'
+import {addTopic,unregister} from '../actions/webinarActions'
 
 
 const Card = (props) => {
     const userLogin = useSelector((state) => state.userLogin);
     const {userInfo} = userLogin;
+    const unregisterR = useSelector((state) => state.unregisterR);
+    const {success:successUnregister} = unregisterR
     const dispatch =useDispatch()
     const d = new Date(props.date);
 const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
@@ -33,6 +35,15 @@ const handleAddTopic = () =>{
     dispatch(addTopic(id))
     console.log(id)
 }
+const handleUnregister = (e) =>{
+    e.preventDefault()
+    dispatch(unregister(id))
+    alert("Unregister successfully")
+}
+useEffect(() => {
+    return () => {
+    }
+}, [successUnregister])
     return (
         <div className="card">
             <div className="text">
@@ -40,9 +51,11 @@ const handleAddTopic = () =>{
                 <h2>{props.title}</h2>
                 <div className="content">{ReactHtmlParser(props.content)}</div>
                 <p className="time">{endDate}</p>
+                
             </div>
             <div className="links">
-                {userInfo ? (
+                {props.favourite ? (
+                <Link to='/' className="reg-link" onClick={handleUnregister}>Unregister</Link> ) : userInfo ? (
                 <AnchorLink href='#register' className="reg-link" onClick={()=>{handleAddTopic();return true;}}>Register Now</AnchorLink>) :
                 (<Link to="/login" className="reg-link">Register Now</Link>)   }             
                 <Link to={'/webinar/:'+props.id}><img src={Arrow} alt='arrow'/></Link>

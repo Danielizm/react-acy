@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Form = () => {
   const [topic,setTopic] = useState("");
@@ -11,12 +11,21 @@ const Form = () => {
   const [lastError, setLastError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [valid, setValid] = useState(true);
+  //const [clear, setClear] = useState(false);
   const webinarList = useSelector(state=>state.webinarList)
   const {webinars,loading,error} = webinarList
+  const webinarListToken = useSelector(state=>state.webinarListToken)
+  const {webinarsT,tloading,terror} = webinarListToken
   const topicAdd = useSelector(state=>state.topicAdd)
-  const submitHandler = (e) => {
-    e.preventDefault();
+  const userLogin = useSelector((state) => state.userLogin);
+  const {userInfo} = userLogin;
+  const submitHandler = () => {
     console.log(topic,firstName,lastName,email);
+    alert("Register successfully")
+    setTopic("")
+    setFirstName("")
+    setLastName("")
+    setEmail("")
   };
   const validateEmail = () => {
     const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -58,6 +67,10 @@ const Form = () => {
       setValid(false)
     }
   };
+  useEffect(() => {
+    return () => {
+    }
+  }, [topic,firstName,lastName,email])
   return (
     <div className="register" id="register">
       <div className="container">
@@ -71,7 +84,9 @@ const Form = () => {
               <li>
                 <label htmlFor="topic">Topic</label>
                 {topicError !== null && (<span className="error-msg">{topicError}</span>) }
-                {loading ? <div className="text-center">Loading...</div> : error ? <div className="text-center">{error}</div> :
+                {(userInfo && tloading) ? <div className="text-center">Loading...</div> : (userInfo && terror) ? <div className="text-center">{terror}</div> : 
+            (!userInfo && loading) ? <div className="text-center">Loading...</div> : (!userInfo && error) ? <div className="text-center">{error}</div> :
+                <div class="selectdiv">
                 <select
                   name="topic"
                   id="topic"
@@ -80,10 +95,14 @@ const Form = () => {
                   onBlur={validateTopic}
                 >
                   <option value=''>Select a topic</option>
-                  {webinars.map(w=>(
+                  {userInfo ?
+                  webinarsT.filter(x => x.favourited === false).map(w=>(
                   <option key={w.id} value={w.id}>{w.title}</option>
-                  ))}
-                </select> }
+                  )):
+                  webinars.map(w=>(
+                    <option key={w.id} value={w.id}>{w.title}</option>
+                    ))}
+                </select></div> }
               </li>
               <li>
                 <label htmlFor="firstName">First Name</label>
