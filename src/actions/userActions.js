@@ -40,9 +40,7 @@ const logout = () => async (dispatch, getState) => {
     } = getState();
     const { data } = await axios.post(
       "https://api.finlogix.com/v1/auth/logout",
-      { headers: { Authorization: `Bearer ${userInfo.token}`,Accept: "application/json",
-      "Content-Type": "application/json",
-      "X-Requested-With": "XMLHttpRequest", } }
+      { headers: { Authorization: `Bearer ${userInfo.token}` } }
     );
     dispatch({ type: USER_LOGOUT_SUCCESS, payload: {msg: "Logout successfully"} });
     Cookie.remove("userInfo");
