@@ -1,6 +1,5 @@
 {
   "name": "react-webinar",
-  "proxy": "https://api.finlogix.com",
   "version": "0.1.0",
   "private": true,
   "description": "A demo app for webinar",

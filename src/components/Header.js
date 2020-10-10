@@ -19,8 +19,8 @@ const Header = (props) => {
   useEffect(() => {}, [userInfo]);
   const handleLogout = (e) => {
       e.preventDefault();
-    console.log("logout");
     dispatch(logout());
+    console.log("logout");
     //props.history.push("/");
   };
   return (

@@ -1,12 +1,12 @@
 import React,{useEffect} from 'react'
 import { useSelector } from "react-redux"
 //import axios from 'axios'
-import {Link} from 'react-router-dom'
+import {Link,Redirect} from 'react-router-dom'
 
 const Profile = (props) => {
     const userLogin = useSelector((state) => state.userLogin);
     const {userInfo} = userLogin;
-    const {user} = userInfo;
+    const {user} = userInfo?userInfo:{};
     /*const getPost = async () => {  
         const query = `https://api.finlogix.com/v1/posts?favourited=1&author=124`
         const headers = {headers:{Authorization: `Bearer ${token}`}}
@@ -35,6 +35,7 @@ const Profile = (props) => {
         return () => {
         }
     }, [userInfo])
+    if(userInfo){
     return (
         <div className="profile">
             <div className="container">
@@ -51,7 +52,9 @@ const Profile = (props) => {
                 </div>
             </div>
         </div>
-    )
+    )}else{
+      return <Redirect to="/login"/>
+    }
 }
 
 export default Profile

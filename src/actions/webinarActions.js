@@ -12,6 +12,9 @@ import {
     REGISTED_LIST_REQUEST,
     REGISTED_LIST_SUCCESS,
     REGISTED_LIST_FAIL,
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAIL,
     UNREGISTER_REQUEST,
     UNREGISTER_SUCCESS,
     UNREGISTER_FAIL,
@@ -74,6 +77,20 @@ const addTopic = (id) => async (dispatch) => {
     }
 };
 
+const registerW = (id) => async (dispatch,getState) => {
+	try{
+		dispatch({type:REGISTER_REQUEST, payload:id});
+        const {userLogin:{userInfo}} = getState();
+		const query = `https://api.finlogix.com/v1/favourites?ids[]=${id}?model=post`
+        const headers = {headers:{Authorization: `Bearer ${userInfo.token}`}}
+        const response = await axios.post(query,headers)
+		dispatch({type:REGISTER_SUCCESS, payload:response.data});
+	}
+	catch(error){
+		dispatch({type:REGISTER_FAIL, payload:error.message});
+	}
+};
+
 const unregister = (id) => async (dispatch,getState) => {
 	try{
 		dispatch({type:UNREGISTER_REQUEST, payload:id});
@@ -88,4 +105,4 @@ const unregister = (id) => async (dispatch,getState) => {
 	}
 };
 
-export {listWebinar,listWebinarWithToken,addTopic,listRegisted,unregister};
+export {listWebinar,listWebinarWithToken,addTopic,listRegisted,registerW,unregister};

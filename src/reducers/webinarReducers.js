@@ -10,7 +10,10 @@ import {
     TOPIC_ADD_FAIL,
     REGISTED_LIST_REQUEST,
     REGISTED_LIST_SUCCESS,
-    REGISTED_LIST_FAIL,
+	REGISTED_LIST_FAIL,
+	REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAIL,
     UNREGISTER_REQUEST,
     UNREGISTER_SUCCESS,
     UNREGISTER_FAIL,
@@ -68,6 +71,18 @@ const topicAddReducer = (state = {}, action ) => {
 	}
 }
 
+const registerReducer = (state = {}, action) => {
+    switch (action.type) {
+      case REGISTER_REQUEST:
+        return {loading: true,};
+      case REGISTER_SUCCESS:
+        return { loading: false, success: true };
+      case REGISTER_FAIL:
+        return { loading: false, rerror:action.payload };
+      default: return state;
+    }
+  }
+
 const unregisterReducer = (state = {}, action) => {
     switch (action.type) {
       case UNREGISTER_REQUEST:
@@ -80,4 +95,4 @@ const unregisterReducer = (state = {}, action) => {
     }
   }
 
-export {webinarListReducer,webinarListTokenReducer,topicAddReducer,registedListReducer,unregisterReducer}
+export {webinarListReducer,webinarListTokenReducer,topicAddReducer,registedListReducer,registerReducer,unregisterReducer}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import {registerW} from '../actions/webinarActions'
 
 const Form = () => {
   const [topic,setTopic] = useState("");
@@ -17,11 +18,20 @@ const Form = () => {
   const webinarListToken = useSelector(state=>state.webinarListToken)
   const {webinarsT,tloading,terror} = webinarListToken
   const topicAdd = useSelector(state=>state.topicAdd)
+  const id = topicAdd.topicid
   const userLogin = useSelector((state) => state.userLogin);
   const {userInfo} = userLogin;
+  const register = useSelector((state) => state.register);
+  const {sucess} = register;
+  const dispatch = useDispatch;
   const submitHandler = () => {
+    dispatch(registerW(id))
     console.log(topic,firstName,lastName,email);
-    alert("Register successfully")
+    if(sucess){
+      alert("Register successfully")
+    }else{
+      alert("Register unsuccessfully")
+    }
     setTopic("")
     setFirstName("")
     setLastName("")
@@ -41,7 +51,7 @@ const Form = () => {
     }
   };
   const validateTopic = () =>{
-    if(topic.length === 0){
+    if(topic === null){
       setTopicError("Please choose a topic")
       setValid(true)
     }else{

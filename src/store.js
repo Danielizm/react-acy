@@ -1,6 +1,6 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux';
 import {userLoginReducer} from './reducers/userReducers';
-import {webinarListReducer,webinarListTokenReducer,topicAddReducer,registedListReducer,unregisterReducer} from './reducers/webinarReducers';
+import {webinarListReducer,webinarListTokenReducer,topicAddReducer,registedListReducer,registerReducer,unregisterReducer} from './reducers/webinarReducers';
 import thunk from 'redux-thunk';
 import Cookie from 'js-cookie';
 
@@ -14,6 +14,7 @@ const reducer =combineReducers({
     //userLogout:userLogoutReducer,
     topicAdd:topicAddReducer,
     registedList:registedListReducer,
+    register:registerReducer,
     unregisterR:unregisterReducer,
 });
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
