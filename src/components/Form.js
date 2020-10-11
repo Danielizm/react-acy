@@ -3,7 +3,7 @@ import { useSelector,useDispatch } from "react-redux";
 import {registerW} from '../actions/webinarActions'
 
 const Form = () => {
-  const [topic,setTopic] = useState("");
+  const [topic,setTopic] = useState('');
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -24,15 +24,20 @@ const Form = () => {
   const register = useSelector((state) => state.register);
   const {sucess} = register;
   const dispatch = useDispatch;
-  const submitHandler = () => {
-    dispatch(registerW(id))
+  useEffect(() => {
+    return () => {
+    }
+  }, [topic,firstName,lastName,email])
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(registerW({id,topic,firstName,lastName,email}));
     console.log(topic,firstName,lastName,email);
     if(sucess){
       alert("Register successfully")
     }else{
       alert("Register unsuccessfully")
     }
-    setTopic("")
+    setTopic('')
     setFirstName("")
     setLastName("")
     setEmail("")
@@ -46,16 +51,16 @@ const Form = () => {
       setEmailError("Invalid email")
       setValid(true)
     }else{
-      setEmailError(null)
+      setEmailError('')
       setValid(false)
     }
   };
   const validateTopic = () =>{
-    if(topic === null){
+    if(topic.length === 0){
       setTopicError("Please choose a topic")
       setValid(true)
     }else{
-      setTopicError(null)
+      setTopicError('')
       setValid(false)
     }
   };
@@ -64,7 +69,7 @@ const Form = () => {
       setFirstError("First name required")
       setValid(true)
     }else{
-      setFirstError(null)
+      setFirstError('')
       setValid(false)
     }
   };
@@ -73,14 +78,10 @@ const Form = () => {
       setLastError("Last name required")
       setValid(true)
     }else{
-      setLastError(null)
+      setLastError('')
       setValid(false)
     }
   };
-  useEffect(() => {
-    return () => {
-    }
-  }, [topic,firstName,lastName,email])
   return (
     <div className="register" id="register">
       <div className="container">
@@ -96,7 +97,7 @@ const Form = () => {
                 {topicError !== null && (<span className="error-msg">{topicError}</span>) }
                 {(userInfo && tloading) ? <div className="text-center">Loading...</div> : (userInfo && terror) ? <div className="text-center">{terror}</div> : 
             (!userInfo && loading) ? <div className="text-center">Loading...</div> : (!userInfo && error) ? <div className="text-center">{error}</div> :
-                <div class="selectdiv">
+                <div className="selectdiv">
                 <select
                   name="topic"
                   id="topic"
@@ -154,7 +155,7 @@ const Form = () => {
                 />
               </li>
               <li>
-                <button type="submit" className="button" disabled={(valid || topic.length ===0 || firstName.length ===0 || lastName.length ===0 || email.length ===0)?true:false}>
+                <button type="submit" className="button" disabled={(valid)?true:false}>
                   Register
                 </button>
               </li>

@@ -1,8 +1,8 @@
 {
-  "name": "react-webinar",
+  "name": "react-acy",
   "version": "0.1.0",
   "private": true,
-  "description": "A demo app for webinar",
+  "description": "A demo app for acy",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -19,10 +19,8 @@
     "react-redux": "^7.2.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "react-slick": "^0.27.11",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "slick-carousel": "^1.8.1"
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,5 +42,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "https://api.finlogix.com"
 }

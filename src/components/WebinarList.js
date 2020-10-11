@@ -1,67 +1,136 @@
-import React,{useEffect} from 'react'
-import Card from './Card'
-import {useSelector,useDispatch} from 'react-redux';
-import {listWebinar,listWebinarWithToken} from '../actions/webinarActions'
-import Slider from "react-slick";
+import React, { useState, useEffect, useRef } from "react";
+import Card from "./Card";
+import { useSelector, useDispatch } from "react-redux";
+//import { listWebinar, listWebinarWithToken } from "../actions/webinarActions";
+import axios from "axios";
 
 const WebinarList = () => {
-    const webinarList = useSelector(state=>state.webinarList)
+  /*const webinarList = useSelector(state=>state.webinarList)
     const {webinars,loading,error} = webinarList
     const webinarListToken = useSelector(state=>state.webinarListToken)
-    const {webinarsT,tloading,terror} = webinarListToken
-    const userLogin = useSelector((state) => state.userLogin);
-    const {userInfo} = userLogin;
-    //const {data} = webinars
-    const dispatch = useDispatch()
-    const settings = {
-      infinite: true,
-      //lazyLoad: true,
-      speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 3,
-      //rows: 3,
-      slidesPerRow: 2,
-      responsive: [
-        {
-          breakpoint: 578,
-          settings: {
-            //lazyLoad: true,
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            infinite: true,
-            slidesPerRow: 6,
-          }
-        },]
-      };
+    const {webinarsT,tloading,terror} = webinarListToken*/
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+  const [posts, setPosts] = useState([]);
+  const [meta, setMeta] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [view,setView] = useState(false);
+  //const dispatch = useDispatch()
 
-    useEffect(() => {
-        if(userInfo){
-        dispatch(listWebinarWithToken());
+  /*const getPosts = () => {
+      if(userInfo){
+            dispatch(listWebinarWithToken(page));
         }else{
-            dispatch(listWebinar());  
+            dispatch(listWebinar(page));
         }
-        return () => {
-        }
-    }, [dispatch,userInfo])
-    return (
-        <div className='webinar-list'>
-            {(userInfo && tloading) ? <div className="text-center">Loading...</div> : (userInfo && terror) ? <div className="text-center">{terror}</div> : 
-            (!userInfo && loading) ? <div className="text-center">Loading...</div> : (!userInfo && error) ? <div className="text-center">{error}</div> : 
-            <div className="container">
-                <Slider {...settings}>
-                {/*<div className="card-wrap">*/}
-                {userInfo ?
-                webinarsT.filter(x => x.favourited === false).map(w=>(
-                <Card key={w.id} id={w.id} date={w.created_at} title={w.title} favourite={w.favourited} content={w.content}/>)) : 
-                webinars.map(w=>(
-                    <Card key={w.id} id={w.id} date={w.created_at} title={w.title} favourite={w.favourited} content={w.content}/>)) 
-                }
-                {/*</div>*/}  
-                </Slider>         
-            </div>
-            }
-        </div>
-    )
-}
+    }*/
 
-export default WebinarList
+  const getPosts = async (page) => {
+    setLoading(true);
+    if (userInfo) {
+      const headers = {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      };
+      await axios
+        .get(`/v1/posts?per_page=12&page=${page}`, headers)
+        .then((res) => {
+          setPosts([...posts, ...res.data.data]);
+          setMeta(res.data.meta.pagination.total_pages);
+          setLoading(false);
+        });
+    } else {
+      await axios.get(`/v1/posts?per_page=12&page=${page}`).then((res) => {
+        setPosts([...posts, ...res.data.data]);
+        setMeta(res.data.meta.pagination.total_pages);
+        setLoading(false);
+      });
+    }
+  };
+
+  let content;
+  if (userInfo) {
+    content = posts
+      .filter((x) => x.favourited === false)
+      .map((w,index) => (
+        <Card
+          key={index}
+          id={w.id}
+          date={w.created_at}
+          title={w.title}
+          favourite={w.favourited}
+          content={w.content}
+        />
+      ));
+  } else {
+    content = posts.map((w,index) => (
+      <Card
+        key={index}
+        id={w.id}
+        date={w.created_at}
+        title={w.title}
+        favourite={w.favourited}
+        content={w.content}
+      />
+    ));
+  }
+
+  useEffect(() => {
+    getPosts(page);
+    
+    const options = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 1.0,
+    };
+
+    const handleObserver = (entities, observer) => {
+      const x = entities[0].intersectionRatio;
+      if (x === 1) {
+        setView(true)
+        if (page <= meta) {
+          getPosts(page+1);
+          setPage(page+1);
+        }
+      }else{
+        setView(false)
+      }
+    };
+    let observer = new IntersectionObserver(handleObserver, options);
+    const target = document.getElementById("loading");
+    observer.observe(target);
+
+    return () => {
+      observer.unobserve(target);
+    };
+  }, [userInfo,view]);
+
+  const loadingCSS = {
+    width: "50px",
+    margin: "auto",
+  };
+
+  const loadingTextCSS = { display: loading ? "block" : "none" };
+
+  return (
+    <div className="webinar-list">
+      <div className="container">
+        <div className="card-wrap">
+          <div className="card-inner">
+            {content}
+            <div
+              className="text-center"
+              id="loading"
+              style={loadingCSS}
+              //ref={ref}
+            >
+              <span style={loadingTextCSS}>Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default WebinarList;

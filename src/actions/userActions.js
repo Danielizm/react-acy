@@ -11,20 +11,18 @@ const login = ({ email, password }) => async (dispatch) => {
   try {
     dispatch({ type: USER_LOGIN_REQUEST, payload: { email, password } });
     const url =
-      "https://api.finlogix.com/v1/auth/email/login?email=" +
+      "/v1/auth/email/login?email=" +
       email +
       "&password=" +
       password;
-    const { data } = await axios(url, {
-      method: "POST",
+    const { data } = await axios.post(url/*, {
       headers: {
-        Accept: "application/json",
         "Content-Type": "application/json",
+        Accept: "application/json",
         withCredentials: true,
         "X-Requested-With": "XMLHttpRequest",
       },
-    });
-    //= fetch(url,{method: "POST"});
+    }*/);
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     Cookie.set("userInfo", JSON.stringify(data));
   } catch (error) {
